@@ -1,0 +1,88 @@
+{
+  "name": "phubadee-super-app",
+  "version": "1.0.0",
+  "description": "A super app with multiple utilities for productivity",
+  "main": "dist/main.js",
+  "scripts": {
+    "dev": "run-s build:all start",
+    "start": "electron .",
+    "build": "tsc",
+    "build:renderer": "cd renderer && npm run build",
+    "build:all": "run-s build build:renderer",
+    "watch": "tsc --watch",
+    "package": "run-s build:all package:electron",
+    "package:electron": "electron-builder",
+    "package:mac": "run-s build:all package:mac:only",
+    "package:mac:only": "electron-builder --mac --arm64"
+  },
+  "keywords": [
+    "electron",
+    "utilities",
+    "developer-tools"
+  ],
+  "author": "Phubadee",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/auto-launch": "^5.0.5",
+    "@types/node": "^20.10.0",
+    "@types/pdfkit": "^0.17.3",
+    "@types/react": "^18.2.45",
+    "@types/react-dom": "^18.2.18",
+    "@vitejs/plugin-react": "^4.2.1",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.8"
+  },
+  "dependencies": {
+    "auto-launch": "^5.0.6",
+    "jsonpath-plus": "^10.3.0",
+    "pdfkit": "^0.17.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.21.0"
+  },
+  "build": {
+    "appId": "com.devdisk.app",
+    "productName": "DevDesk",
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "category": "public.app-category.developer-tools",
+      "icon": "assets/appIcon.icns"
+    },
+    "files": [
+      "dist/**/*",
+      "renderer/dist/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "assets",
+        "to": "assets",
+        "filter": [
+          "tray.png",
+          "trayTemplate.png",
+          "appIcon.png"
+        ]
+      }
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "release"
+    }
+  }
+}

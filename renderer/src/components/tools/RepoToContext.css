@@ -1,0 +1,257 @@
+.repo-to-context {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.repo-to-context .tool-header {
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.repo-to-context .tool-header h2 {
+  font-size: 1.8em;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 8px;
+}
+
+.repo-to-context .tool-description {
+  color: #888;
+  font-size: 0.95em;
+}
+
+.repo-to-context .controls {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 12px 16px;
+  background: #252525;
+  border-radius: 8px;
+  border: 1px solid #333;
+  flex-shrink: 0;
+}
+
+.path-input-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.path-input {
+  flex: 1;
+  padding: 10px 12px;
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.9em;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+.path-input:focus {
+  outline: none;
+  border-color: #0066cc;
+}
+
+.path-input::placeholder {
+  color: #666;
+}
+
+.button-group {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: #0066cc;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #0052a3;
+}
+
+.btn-secondary {
+  background: #3a3a3a;
+  color: #e0e0e0;
+}
+
+.btn-secondary:hover {
+  background: #4a4a4a;
+}
+
+.btn-icon {
+  padding: 6px 12px;
+  background: #3a3a3a;
+  border: none;
+  border-radius: 4px;
+  color: #e0e0e0;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: #4a4a4a;
+}
+
+.output-files {
+  padding: 12px 16px;
+  background: #252525;
+  border: 1px solid #333;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.output-files h3 {
+  font-size: 0.95em;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin: 0 0 12px 0;
+}
+
+.file-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-file {
+  padding: 8px 16px;
+  background: #2a5f2a;
+  border: 1px solid #3a7f3a;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-file:hover {
+  background: #357f35;
+  border-color: #4a9f4a;
+}
+
+.output-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #252525;
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #2a2a2a;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+
+.output-header h3 {
+  font-size: 1em;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin: 0;
+}
+
+.output-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.char-count {
+  font-size: 0.85em;
+  color: #888;
+}
+
+.wrap-on .output-textarea {
+  flex: 1;
+  padding: 16px;
+  background: #1e1e1e;
+  border: none;
+  color: #e0e0e0;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.wrap-off .output-textarea {
+  flex: 1;
+  padding: 16px;
+  background: #1e1e1e;
+  border: none;
+  color: #e0e0e0;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+  font-size: 0.9em;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  white-space: pre;
+  overflow-x: auto;
+  overflow-y: auto;
+}
+
+.output-textarea::placeholder {
+  color: #555;
+}
+
+.output-textarea:focus {
+  background: #1a1a1a;
+}
+
+@media (max-width: 768px) {
+  .path-input-group {
+    flex-direction: column;
+  }
+
+  .path-input {
+    width: 100%;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+

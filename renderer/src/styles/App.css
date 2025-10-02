@@ -1,0 +1,35 @@
+.app {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background: #1e1e1e;
+}
+
+.main-content {
+  flex: 1;
+  overflow: hidden;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.coming-soon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #888;
+}
+
+.coming-soon h2 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: #e0e0e0;
+}
+
+.coming-soon p {
+  font-size: 1.2em;
+}
+

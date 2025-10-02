@@ -1,0 +1,49 @@
+# Dependencies
+node_modules/
+renderer/node_modules/
+
+# Build outputs
+dist/
+renderer/dist/
+build/
+release/
+out/
+
+# Electron builder artifacts
+*.dmg
+*.zip
+*.blockmap
+*.exe
+*.deb
+*.rpm
+*.AppImage
+*.snap
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Test coverage
+coverage/
+
+# Temporary files
+*.tmp
+.cache
