@@ -119,6 +119,20 @@ const JsonFormatter: React.FC = () => {
     }
   };
 
+  const handleOutputKeyDown = (e: React.KeyboardEvent) => {
+    // Ctrl+A or Cmd+A - select all text in this element only
+    if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
+      e.preventDefault();
+      e.stopPropagation();
+      const selection = window.getSelection();
+      const range = document.createRange();
+      const target = e.currentTarget;
+      range.selectNodeContents(target);
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+    }
+  };
+
   const clearAll = () => {
     setInput('');
     setOutput('');
@@ -245,6 +259,9 @@ const JsonFormatter: React.FC = () => {
             <pre 
               className="editor-output"
               dangerouslySetInnerHTML={{ __html: syntaxHighlight(output) }}
+              tabIndex={0}
+              onKeyDown={handleOutputKeyDown}
+              title="Click to select text, use Ctrl+A to select all, Ctrl+C to copy"
             />
           ) : (
             <div className="editor-placeholder">
