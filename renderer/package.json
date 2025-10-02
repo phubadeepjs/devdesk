@@ -5,13 +5,19 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:web": "VITE_BUILD_TARGET=web vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build:web": "tsc && VITE_BUILD_TARGET=web vite build",
+    "build:desktop": "tsc && vite build",
+    "preview": "vite preview",
+    "preview:web": "VITE_BUILD_TARGET=web vite preview"
   },
   "dependencies": {
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
+    "json5": "^2.2.3",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "json5": "^2.2.3"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.45",
@@ -21,4 +27,3 @@
     "vite": "^5.0.8"
   }
 }
-

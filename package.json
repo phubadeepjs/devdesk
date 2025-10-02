@@ -5,15 +5,21 @@
   "main": "dist/main.js",
   "scripts": {
     "dev": "run-s build:all start",
+    "dev:web": "cd renderer && yarn dev:web",
     "start": "electron .",
     "build": "tsc",
-    "build:renderer": "cd renderer && npm run build",
+    "build:renderer": "cd renderer && yarn build",
+    "build:renderer:web": "cd renderer && yarn build:web",
+    "build:renderer:desktop": "cd renderer && yarn build:desktop",
     "build:all": "run-s build build:renderer",
+    "build:web": "yarn build:renderer:web",
+    "build:desktop": "run-s build build:renderer:desktop",
     "watch": "tsc --watch",
-    "package": "run-s build:all package:electron",
+    "package": "run-s build:desktop package:electron",
     "package:electron": "electron-builder",
-    "package:mac": "run-s build:all package:mac:only",
-    "package:mac:only": "electron-builder --mac --arm64"
+    "package:mac": "run-s build:desktop package:mac:only",
+    "package:mac:only": "electron-builder --mac --arm64",
+    "preview:web": "cd renderer && yarn preview:web"
   },
   "keywords": [
     "electron",

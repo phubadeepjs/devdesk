@@ -2,32 +2,33 @@ import React, { useState, useEffect } from 'react';
 import { ToolType } from '../App';
 import './Sidebar.css';
 import { useSettings } from '../contexts/SettingsContext';
+import { FEATURES, IS_ELECTRON } from '../config';
 
 interface SidebarProps {
   activeTool: ToolType;
   onSelectTool: (tool: ToolType) => void;
 }
 
-const tools = [
-  { id: 'json-formatter' as ToolType, name: 'JSON Formatter', icon: '{ }' },
-  { id: 'json-query' as ToolType, name: 'JSON Query', icon: '🔎' },
-  { id: 'text-compare' as ToolType, name: 'Text Compare', icon: '⚖️' },
-  { id: 'regex-tester' as ToolType, name: 'RegEx Tester', icon: '🔍' },
-  { id: 'lorem-ipsum' as ToolType, name: 'Lorem Ipsum', icon: '📝' },
-  { id: 'repo-to-context' as ToolType, name: 'Repo to Context', icon: '📦' },
+const allTools = [
+  { id: 'json-formatter' as ToolType, name: 'JSON Formatter', icon: '{ }', feature: 'jsonFormatter' },
+  { id: 'json-schema' as ToolType, name: 'JSON Schema', icon: '📋', feature: 'jsonSchema' },
+  { id: 'json-query' as ToolType, name: 'JSON Query', icon: '🔎', feature: 'jsonQuery' },
+  { id: 'text-compare' as ToolType, name: 'Text Compare', icon: '⚖️', feature: 'textCompare' },
+  { id: 'regex-tester' as ToolType, name: 'RegEx Tester', icon: '🔍', feature: 'regexTester' },
+  { id: 'lorem-ipsum' as ToolType, name: 'Lorem Ipsum', icon: '📝', feature: 'loremIpsum' },
+  { id: 'repo-to-context' as ToolType, name: 'Repo to Context', icon: '📦', feature: 'repoToContext' },
 ];
+
+// Filter tools based on available features
+const tools = allTools.filter(tool => FEATURES[tool.feature as keyof typeof FEATURES]);
 
 const Sidebar: React.FC<SidebarProps> = ({ activeTool, onSelectTool }) => {
   const { wrapLongLines, setWrapLongLines } = useSettings();
   const [autoLaunch, setAutoLaunch] = useState(false);
-  const [isElectron, setIsElectron] = useState(false);
 
   useEffect(() => {
-    // Check if running in Electron
-    setIsElectron(!!window.electronAPI);
-    
-    // Load auto-launch state
-    if (window.electronAPI?.getAutoLaunch) {
+    // Load auto-launch state (only in Electron)
+    if (IS_ELECTRON && window.electronAPI?.getAutoLaunch) {
       window.electronAPI.getAutoLaunch().then(enabled => {
         setAutoLaunch(enabled);
       }).catch(() => {
@@ -78,7 +79,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeTool, onSelectTool }) => {
           />
           <span style={{ userSelect: 'none' }}>Wrap long lines</span>
         </label>
-        {isElectron && (
+        {IS_ELECTRON && FEATURES.autoLaunch && (
           <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', marginTop: 8 }}>
             <input
               type="checkbox"
