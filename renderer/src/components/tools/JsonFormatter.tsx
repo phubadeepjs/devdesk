@@ -33,6 +33,15 @@ const JsonFormatter: React.FC = () => {
     }
   });
 
+  const [mode, setMode] = useState<'beautify' | 'minify'>(() => {
+    try {
+      const stored = localStorage.getItem('jf.mode');
+      return stored === 'minify' ? 'minify' : 'beautify';
+    } catch {
+      return 'beautify';
+    }
+  });
+
   const normalizeObject = (value: any): any => {
     // Ensure we output valid JS object that can be stringified with or without quoted keys
     return value;
@@ -170,6 +179,30 @@ const JsonFormatter: React.FC = () => {
     } catch {}
   }, [quoteKeys]);
 
+  useEffect(() => {
+    try {
+      localStorage.setItem('jf.mode', mode);
+    } catch {}
+  }, [mode]);
+
+  // Auto-format when input changes based on mode
+  useEffect(() => {
+    if (input.trim()) {
+      if (mode === 'beautify') {
+        beautifyJson();
+      } else {
+        minifyJson();
+      }
+    } else {
+      setOutput('');
+      setError('');
+    }
+  }, [input, indentSize, quoteKeys, mode, beautifyJson, minifyJson]);
+
+  const toggleMode = () => {
+    setMode(prev => prev === 'beautify' ? 'minify' : 'beautify');
+  };
+
   const { wrapLongLines } = useSettings();
   return (
     <div className={`json-formatter ${wrapLongLines ? 'wrap-on' : 'wrap-off'}`}>
@@ -207,11 +240,8 @@ const JsonFormatter: React.FC = () => {
         </div>
 
         <div className="button-group">
-          <button className="btn btn-primary" onClick={beautifyJson}>
-            ✨ Beautify
-          </button>
-          <button className="btn btn-secondary" onClick={minifyJson}>
-            🗜️ Minify
+          <button className="btn btn-primary" onClick={toggleMode}>
+            {mode === 'beautify' ? '✨ Beautify' : '🗜️ Minify'}
           </button>
           <button className="btn btn-secondary" onClick={pasteFromClipboard}>
             📋 Paste
