@@ -132,25 +132,6 @@ const RegExTester: React.FC = () => {
     } catch {}
   };
 
-  const copyPattern = async () => {
-    try {
-      await navigator.clipboard.writeText(`/${pattern}/${flags}`);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
-
-  const copyMatches = async () => {
-    try {
-      const matchesText = regexResult.matches.map((m, idx) => 
-        `Match ${idx + 1} (index ${m.index}): ${m.fullMatch}`
-      ).join('\n');
-      await navigator.clipboard.writeText(matchesText);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
-
   const handleHighlightedKeyDown = (e: React.KeyboardEvent) => {
     // Ctrl+A or Cmd+A - select all text in this element only
     if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
@@ -220,16 +201,16 @@ const RegExTester: React.FC = () => {
                 className="pattern-input"
                 value={pattern}
                 onChange={(e) => setPattern(e.target.value)}
+                onCopy={(e) => {
+                  e.preventDefault();
+                  const fullPattern = `/${pattern}/${flags}`;
+                  navigator.clipboard.writeText(fullPattern);
+                }}
                 placeholder="Enter regex pattern..."
                 spellCheck={false}
               />
               <span className="pattern-suffix">/{flags}</span>
             </div>
-            {pattern && (
-              <button className="btn-copy-pattern" onClick={copyPattern} title="Copy pattern with flags">
-                📋 Copy
-              </button>
-            )}
           </div>
         </div>
 
@@ -353,9 +334,6 @@ const RegExTester: React.FC = () => {
         <div className="matches-panel">
           <div className="matches-panel-header">
             <h3>Matches Detail</h3>
-            <button className="btn-icon" onClick={copyMatches} title="Copy all matches">
-              📋 Copy Matches
-            </button>
           </div>
           <div className="matches-list">
             {regexResult.matches.map((match, idx) => (

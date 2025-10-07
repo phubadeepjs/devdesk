@@ -137,15 +137,10 @@
 }
 
 .json-formatter .editor-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: minmax(0, 1fr);
-  align-items: stretch;
-  align-content: stretch;
+  display: flex;
   gap: 8px;
   flex: 1;
   min-height: 0;
-  height: 100%;
   overflow: hidden;
 }
 
@@ -157,35 +152,91 @@
   border-radius: 8px;
   overflow: hidden;
   min-height: 0;
-  height: 100%;
-  min-width: 0; /* allow inner content to wrap within grid/flex */
+  flex: 1 1 0; /* Equal flex basis, grow equally */
+  width: 0; /* Start with 0 and let flex handle sizing */
+  min-width: 0; /* Critical: allow content to shrink */
 }
 
 .json-formatter .panel-header {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
+  gap: 12px;
   padding: 10px 12px;
   background: #2a2a2a;
   border-bottom: 1px solid #333;
   flex-shrink: 0;
+  min-width: 0;
 }
 
 .json-formatter .panel-header h3 {
   font-size: 1em;
   font-weight: 600;
   color: #e0e0e0;
+  margin: 0;
+  white-space: nowrap;
 }
 
 .json-formatter .panel-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 12px;
+  flex: 1; /* Take remaining space */
+  min-width: 0; /* Allow shrinking */
 }
 
 .json-formatter .char-count {
   font-size: 0.85em;
   color: #888;
+}
+
+/* Find box styling */
+.json-formatter .find-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1f1f1f;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 4px 8px;
+}
+
+.json-formatter .find-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #e0e0e0;
+  font-size: 0.9em;
+  width: 150px;
+}
+
+.json-formatter .find-count {
+  color: #888;
+  font-size: 0.85em;
+  min-width: 40px;
+  text-align: center;
+}
+
+/* Highlight marks in output */
+mark.find-hl {
+  background: rgba(255, 215, 0, 0.4);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0;
+  margin: 0;
+}
+
+/* Custom selection color for input textarea - bright yellow highlight */
+.editor-textarea::selection {
+  background: rgba(255, 215, 0, 0.6);
+  color: #000;
+}
+
+/* Also style selection when textarea is not focused (inactive selection) */
+.editor-textarea::-moz-selection {
+  background: rgba(255, 215, 0, 0.6);
+  color: #000;
 }
 
 .json-formatter.wrap-on .editor-textarea {
@@ -308,9 +359,13 @@
 }
 
 @media (max-width: 1200px) {
-  .editor-container {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
+  .json-formatter .editor-container {
+    flex-direction: column;
+  }
+
+  .json-formatter .editor-panel {
+    width: 100%;
+    flex: 1 1 0;
   }
 }
 
@@ -339,7 +394,11 @@
   }
 
   .json-formatter .editor-container {
-    grid-template-rows: minmax(200px, 1fr) minmax(200px, 1fr);
+    flex-direction: column;
+  }
+
+  .json-formatter .editor-panel {
+    min-height: 200px;
   }
 
   .json-formatter .panel-actions {

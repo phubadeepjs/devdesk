@@ -120,14 +120,6 @@ const JsonSchema: React.FC = () => {
     } catch {}
   };
 
-  const copyOutput = async () => {
-    try {
-      await navigator.clipboard.writeText(output);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
-
   const handleOutputKeyDown = (e: React.KeyboardEvent) => {
     // Ctrl+A or Cmd+A - select all text in this element only
     if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
@@ -185,13 +177,6 @@ const JsonSchema: React.FC = () => {
         <div className="editor-panel">
           <div className="panel-header">
             <h3>Generated Schema</h3>
-            <div className="panel-actions">
-              {output && (
-                <button className="btn-icon" onClick={copyOutput} title="Copy output">
-                  📋 Copy
-                </button>
-              )}
-            </div>
           </div>
           <div className="output-area">
             {output ? (

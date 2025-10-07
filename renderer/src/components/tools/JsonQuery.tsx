@@ -163,14 +163,6 @@ const JsonQuery: React.FC = () => {
     } catch {}
   };
 
-  const copyResult = async () => {
-    try {
-      await navigator.clipboard.writeText(queryResult.resultStr);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
-
   const handleResultKeyDown = (e: React.KeyboardEvent) => {
     // Ctrl+A or Cmd+A - select all text in this element only
     if ((e.ctrlKey || e.metaKey) && e.key === 'a') {
@@ -182,14 +174,6 @@ const JsonQuery: React.FC = () => {
       range.selectNodeContents(target);
       selection?.removeAllRanges();
       selection?.addRange(range);
-    }
-  };
-
-  const copyQuery = async () => {
-    try {
-      await navigator.clipboard.writeText(query);
-    } catch (err) {
-      console.error('Failed to copy:', err);
     }
   };
 
@@ -217,11 +201,6 @@ const JsonQuery: React.FC = () => {
               placeholder="$.path.to.data"
               spellCheck={false}
             />
-            {query && (
-              <button className="btn-copy-inline" onClick={copyQuery} title="Copy query">
-                📋
-              </button>
-            )}
           </div>
         </div>
 
@@ -280,13 +259,6 @@ const JsonQuery: React.FC = () => {
         <div className="results-panel">
           <div className="panel-header">
             <h3>Query Result</h3>
-            <div className="panel-actions">
-              {queryResult.resultStr && (
-                <button className="btn-icon" onClick={copyResult}>
-                  📋 Copy
-                </button>
-              )}
-            </div>
           </div>
           <div className="result-output">
             {queryResult.resultStr ? (

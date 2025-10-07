@@ -145,14 +145,6 @@ const LoremIpsum: React.FC = () => {
     setOutput(result);
   };
 
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(output);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
-
   const clearAll = () => {
     setOutput('');
   };
@@ -246,13 +238,6 @@ const LoremIpsum: React.FC = () => {
       <div className="output-container">
         <div className="output-header">
           <h3>Generated Text</h3>
-          <div className="output-actions">
-            {output && (
-              <button className="btn-icon" onClick={copyToClipboard}>
-                📋 Copy
-              </button>
-            )}
-          </div>
         </div>
         <textarea
           className="output-textarea"

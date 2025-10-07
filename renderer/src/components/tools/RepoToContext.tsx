@@ -72,14 +72,6 @@ const RepoToContext: React.FC = () => {
     }
   };
 
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(output);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
-
   const openFile = async (filePath: string) => {
     if (!window.electronAPI?.openFile) return;
     await window.electronAPI.openFile(filePath);
@@ -154,11 +146,6 @@ const RepoToContext: React.FC = () => {
           <h3>Output Log</h3>
           <div className="output-actions">
             <span className="char-count">{output.length} characters</span>
-            {output && (
-              <button className="btn-icon" onClick={copyToClipboard}>
-                📋 Copy
-              </button>
-            )}
           </div>
         </div>
         <textarea

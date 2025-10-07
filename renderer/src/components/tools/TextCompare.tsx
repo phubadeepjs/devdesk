@@ -176,27 +176,6 @@ const TextCompare: React.FC = () => {
     } catch {}
   }, [ignoreWhitespace]);
 
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch (err) {
-      console.error('Failed to copy:', err);
-    }
-  };
-
-  const pasteFromClipboard = async (side: 'left' | 'right') => {
-    try {
-      const text = await navigator.clipboard.readText();
-      if (side === 'left') {
-        setLeftText(text);
-      } else {
-        setRightText(text);
-      }
-    } catch (err) {
-      console.error('Failed to paste:', err);
-    }
-  };
-
   const clearAll = () => {
     setLeftText('');
     setRightText('');
@@ -374,12 +353,6 @@ const TextCompare: React.FC = () => {
             <h3>Original Text</h3>
             <div className="panel-actions">
               <span className="char-count">{leftText.length} chars, {leftText.split('\n').length} lines</span>
-              <button className="btn-icon" onClick={() => pasteFromClipboard('left')}>
-                📋 Paste
-              </button>
-              <button className="btn-icon" onClick={() => copyToClipboard(leftText)}>
-                📄 Copy
-              </button>
             </div>
           </div>
           <textarea
@@ -396,12 +369,6 @@ const TextCompare: React.FC = () => {
             <h3>Modified Text</h3>
             <div className="panel-actions">
               <span className="char-count">{rightText.length} chars, {rightText.split('\n').length} lines</span>
-              <button className="btn-icon" onClick={() => pasteFromClipboard('right')}>
-                📋 Paste
-              </button>
-              <button className="btn-icon" onClick={() => copyToClipboard(rightText)}>
-                📄 Copy
-              </button>
             </div>
           </div>
           <textarea
