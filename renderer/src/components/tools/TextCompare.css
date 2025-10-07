@@ -170,6 +170,11 @@
   background: rgba(255, 107, 107, 0.15);
 }
 
+.stat-modified {
+  color: #ffc107;
+  background: rgba(255, 193, 7, 0.15);
+}
+
 .text-compare .editor-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -374,7 +379,17 @@
   min-height: 28px;
 }
 
-.diff-line:hover {
+.diff-row {
+  display: grid;
+  grid-template-columns: 50px 1fr 50px 1fr;
+  min-height: 24px;
+  border-bottom: 1px solid #2a2a2a;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.9em;
+  line-height: 1.6;
+}
+
+.diff-row:hover {
   background: #2a2a2a;
 }
 
@@ -432,24 +447,52 @@
   color: #4a9eff;
 }
 
-.diff-added .line-content.right {
+.diff-added .line-content.right.has-content {
   background: rgba(81, 207, 102, 0.15);
   color: #51cf66;
   border-left: 2px solid #51cf66;
 }
 
-.diff-added .line-indicator {
-  color: #51cf66;
+.diff-added .line-content.left {
+  background: #1a1a1a;
 }
 
-.diff-removed .line-content.left {
+.diff-removed .line-content.left.has-content {
   background: rgba(255, 107, 107, 0.15);
   color: #ff6b6b;
   border-left: 2px solid #ff6b6b;
 }
 
-.diff-removed .line-indicator {
-  color: #ff6b6b;
+.diff-removed .line-content.right {
+  background: #1a1a1a;
+}
+
+/* Modified line styles (inline diff) */
+.diff-modified .line-content.left.has-content {
+  background: rgba(255, 107, 107, 0.08);
+  border-left: 2px solid #ff6b6b;
+}
+
+.diff-modified .line-content.right.has-content {
+  background: rgba(81, 207, 102, 0.08);
+  border-left: 2px solid #51cf66;
+}
+
+/* Inline character-level diff highlighting */
+.char-removed {
+  background: rgba(255, 107, 107, 0.4);
+  color: #ffa8a8;
+  font-weight: 500;
+  padding: 1px 2px;
+  border-radius: 2px;
+}
+
+.char-added {
+  background: rgba(81, 207, 102, 0.4);
+  color: #8ce99a;
+  font-weight: 500;
+  padding: 1px 2px;
+  border-radius: 2px;
 }
 
 /* Highlight animation for navigated diff */
@@ -474,8 +517,8 @@
     width: 100%;
   }
   
-  .text-compare .diff-line {
-    grid-template-columns: 40px 1fr 30px 40px 1fr;
+  .text-compare .diff-row {
+    grid-template-columns: 40px 1fr 40px 1fr;
     font-size: 0.85em;
   }
 }
@@ -494,8 +537,8 @@
     width: 100%;
   }
   
-  .text-compare .diff-line {
-    grid-template-columns: 35px 1fr 25px 35px 1fr;
+  .text-compare .diff-row {
+    grid-template-columns: 35px 1fr 35px 1fr;
     font-size: 0.8em;
   }
 

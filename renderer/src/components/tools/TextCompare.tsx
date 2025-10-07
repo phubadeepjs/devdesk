@@ -2,13 +2,15 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import './TextCompare.css';
 import { useSettings } from '../../contexts/SettingsContext';
 
-interface DiffLine {
-  type: 'equal' | 'added' | 'removed';
-  leftLine?: string;
-  rightLine?: string;
+interface DiffRow {
   leftLineNumber?: number;
   rightLineNumber?: number;
-  index?: number; // Original index in diffResults
+  leftContent?: string;
+  rightContent?: string;
+  leftHtml?: string;
+  rightHtml?: string;
+  type: 'equal' | 'added' | 'removed' | 'modified';
+  index: number;
 }
 
 const TextCompare: React.FC = () => {
@@ -68,7 +70,7 @@ const TextCompare: React.FC = () => {
       for (let j = 1; j <= n; j++) {
         const leftProcessed = processText(left[i - 1]);
         const rightProcessed = processText(right[j - 1]);
-        
+
         if (leftProcessed === rightProcessed) {
           dp[i][j] = dp[i - 1][j - 1] + 1;
         } else {
@@ -80,20 +82,197 @@ const TextCompare: React.FC = () => {
     return dp;
   };
 
+  // Character-level LCS for inline diff
+  const computeCharLCS = (left: string, right: string): number[][] => {
+    const m = left.length;
+    const n = right.length;
+    const dp: number[][] = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+
+    for (let i = 1; i <= m; i++) {
+      for (let j = 1; j <= n; j++) {
+        const leftChar = ignoreCase ? left[i - 1].toLowerCase() : left[i - 1];
+        const rightChar = ignoreCase ? right[j - 1].toLowerCase() : right[j - 1];
+
+        if (leftChar === rightChar) {
+          dp[i][j] = dp[i - 1][j - 1] + 1;
+        } else {
+          dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+        }
+      }
+    }
+
+    return dp;
+  };
+
+  // Generate inline diff HTML for two strings using word-aware diff
+  const getInlineDiff = (leftStr: string, rightStr: string): { leftHtml: string; rightHtml: string } => {
+    // Try word-level diff first for better results
+    const wordBoundaryRegex = /(\s+|[^\w\s]+)/g;
+
+    const leftTokens = leftStr.split(wordBoundaryRegex).filter(t => t.length > 0);
+    const rightTokens = rightStr.split(wordBoundaryRegex).filter(t => t.length > 0);
+
+    // If strings are very different or very short, use character-level diff
+    if (leftTokens.length < 3 || rightTokens.length < 3) {
+      return getCharLevelDiff(leftStr, rightStr);
+    }
+
+    // Compute LCS for tokens
+    const tokenDp: number[][] = Array(leftTokens.length + 1).fill(null).map(() => Array(rightTokens.length + 1).fill(0));
+
+    for (let i = 1; i <= leftTokens.length; i++) {
+      for (let j = 1; j <= rightTokens.length; j++) {
+        const leftToken = ignoreCase ? leftTokens[i - 1].toLowerCase() : leftTokens[i - 1];
+        const rightToken = ignoreCase ? rightTokens[j - 1].toLowerCase() : rightTokens[j - 1];
+
+        if (leftToken === rightToken) {
+          tokenDp[i][j] = tokenDp[i - 1][j - 1] + 1;
+        } else {
+          tokenDp[i][j] = Math.max(tokenDp[i - 1][j], tokenDp[i][j - 1]);
+        }
+      }
+    }
+
+    // Backtrack to find diff
+    let i = leftTokens.length;
+    let j = rightTokens.length;
+    const leftParts: Array<{ text: string; type: 'equal' | 'removed' }> = [];
+    const rightParts: Array<{ text: string; type: 'equal' | 'added' }> = [];
+
+    while (i > 0 || j > 0) {
+      const leftToken = i > 0 ? leftTokens[i - 1] : '';
+      const rightToken = j > 0 ? rightTokens[j - 1] : '';
+      const leftTokenProcessed = ignoreCase && leftToken ? leftToken.toLowerCase() : leftToken;
+      const rightTokenProcessed = ignoreCase && rightToken ? rightToken.toLowerCase() : rightToken;
+
+      if (i > 0 && j > 0 && leftTokenProcessed === rightTokenProcessed) {
+        leftParts.unshift({ text: leftToken, type: 'equal' });
+        rightParts.unshift({ text: rightToken, type: 'equal' });
+        i--;
+        j--;
+      } else if (j > 0 && (i === 0 || tokenDp[i][j - 1] >= tokenDp[i - 1][j])) {
+        rightParts.unshift({ text: rightToken, type: 'added' });
+        j--;
+      } else if (i > 0) {
+        leftParts.unshift({ text: leftToken, type: 'removed' });
+        i--;
+      }
+    }
+
+    // Merge consecutive characters of same type
+    const mergeHtml = (parts: Array<{ text: string; type: string }>): string => {
+      const merged: Array<{ text: string; type: string }> = [];
+      for (const part of parts) {
+        if (merged.length > 0 && merged[merged.length - 1].type === part.type) {
+          merged[merged.length - 1].text += part.text;
+        } else {
+          merged.push({ ...part });
+        }
+      }
+      return merged.map(p => {
+        const escaped = p.text
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        if (p.type === 'removed') {
+          return `<span class="char-removed">${escaped}</span>`;
+        } else if (p.type === 'added') {
+          return `<span class="char-added">${escaped}</span>`;
+        }
+        return escaped;
+      }).join('');
+    };
+
+    return {
+      leftHtml: mergeHtml(leftParts),
+      rightHtml: mergeHtml(rightParts)
+    };
+  };
+
+  // Character-level diff (fallback)
+  const getCharLevelDiff = (leftStr: string, rightStr: string): { leftHtml: string; rightHtml: string } => {
+    const dp = computeCharLCS(leftStr, rightStr);
+    let i = leftStr.length;
+    let j = rightStr.length;
+
+    const leftParts: Array<{ text: string; type: 'equal' | 'removed' }> = [];
+    const rightParts: Array<{ text: string; type: 'equal' | 'added' }> = [];
+
+    while (i > 0 || j > 0) {
+      const leftChar = i > 0 ? leftStr[i - 1] : '';
+      const rightChar = j > 0 ? rightStr[j - 1] : '';
+      const leftCharProcessed = ignoreCase && leftChar ? leftChar.toLowerCase() : leftChar;
+      const rightCharProcessed = ignoreCase && rightChar ? rightChar.toLowerCase() : rightChar;
+
+      if (i > 0 && j > 0 && leftCharProcessed === rightCharProcessed) {
+        leftParts.unshift({ text: leftChar, type: 'equal' });
+        rightParts.unshift({ text: rightChar, type: 'equal' });
+        i--;
+        j--;
+      } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
+        rightParts.unshift({ text: rightChar, type: 'added' });
+        j--;
+      } else if (i > 0) {
+        leftParts.unshift({ text: leftChar, type: 'removed' });
+        i--;
+      }
+    }
+
+    // Merge consecutive characters of same type
+    const mergeHtml = (parts: Array<{ text: string; type: string }>): string => {
+      const merged: Array<{ text: string; type: string }> = [];
+      for (const part of parts) {
+        if (merged.length > 0 && merged[merged.length - 1].type === part.type) {
+          merged[merged.length - 1].text += part.text;
+        } else {
+          merged.push({ ...part });
+        }
+      }
+      return merged.map(p => {
+        const escaped = p.text
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
+        if (p.type === 'removed') {
+          return `<span class="char-removed">${escaped}</span>`;
+        } else if (p.type === 'added') {
+          return `<span class="char-added">${escaped}</span>`;
+        }
+        return escaped;
+      }).join('');
+    };
+
+    return {
+      leftHtml: mergeHtml(leftParts),
+      rightHtml: mergeHtml(rightParts)
+    };
+  };
+
   const diffResults = useMemo(() => {
     const leftLines = leftText.split('\n');
     const rightLines = rightText.split('\n');
-    const results: DiffLine[] = [];
 
     if (leftLines.length === 0 && rightLines.length === 0) {
-      return results;
+      return [];
     }
 
     const dp = computeLCS(leftLines, rightLines);
     let i = leftLines.length;
     let j = rightLines.length;
 
-    const diffs: DiffLine[] = [];
+    const rows: DiffRow[] = [];
+    let rowIndex = 0;
+
+    // Calculate similarity score between two lines (0-1)
+    const getSimilarity = (line1: string, line2: string): number => {
+      if (!line1 && !line2) return 1;
+      if (!line1 || !line2) return 0;
+
+      const charDp = computeCharLCS(line1, line2);
+      const lcsLength = charDp[line1.length][line2.length];
+      const maxLength = Math.max(line1.length, line2.length);
+      return maxLength > 0 ? lcsLength / maxLength : 0;
+    };
 
     while (i > 0 || j > 0) {
       const leftLine = i > 0 ? leftLines[i - 1] : '';
@@ -102,48 +281,94 @@ const TextCompare: React.FC = () => {
       const rightProcessed = processText(rightLine);
 
       if (i > 0 && j > 0 && leftProcessed === rightProcessed) {
-        diffs.unshift({
-          type: 'equal',
-          leftLine,
-          rightLine,
+        // Lines are exactly equal - show on same row
+        rows.unshift({
           leftLineNumber: i,
-          rightLineNumber: j
+          rightLineNumber: j,
+          leftContent: leftLine,
+          rightContent: rightLine,
+          type: 'equal',
+          index: rowIndex++
         });
         i--;
         j--;
-      } else if (j > 0 && (i === 0 || dp[i][j - 1] >= dp[i - 1][j])) {
-        diffs.unshift({
+      } else if (i > 0 && j > 0) {
+        // Both lines exist but are different
+        const similarity = getSimilarity(leftLine, rightLine);
+
+        if (similarity > 0.4) {
+          // Lines are similar - show as modified on same row with inline diff
+          const { leftHtml, rightHtml } = getInlineDiff(leftLine, rightLine);
+          rows.unshift({
+            leftLineNumber: i,
+            rightLineNumber: j,
+            leftContent: leftLine,
+            rightContent: rightLine,
+            leftHtml,
+            rightHtml,
+            type: 'modified',
+            index: rowIndex++
+          });
+          i--;
+          j--;
+        } else {
+          // Lines are too different - decide which to show based on LCS
+          if (dp[i - 1][j] >= dp[i][j - 1]) {
+            // Show removed line on left, empty on right
+            rows.unshift({
+              leftLineNumber: i,
+              leftContent: leftLine,
+              type: 'removed',
+              index: rowIndex++
+            });
+            i--;
+          } else {
+            // Show added line on right, empty on left
+            rows.unshift({
+              rightLineNumber: j,
+              rightContent: rightLine,
+              type: 'added',
+              index: rowIndex++
+            });
+            j--;
+          }
+        }
+      } else if (j > 0) {
+        // Only right line exists - added
+        rows.unshift({
+          rightLineNumber: j,
+          rightContent: rightLine,
           type: 'added',
-          rightLine,
-          rightLineNumber: j
+          index: rowIndex++
         });
         j--;
       } else if (i > 0) {
-        diffs.unshift({
+        // Only left line exists - removed
+        rows.unshift({
+          leftLineNumber: i,
+          leftContent: leftLine,
           type: 'removed',
-          leftLine,
-          leftLineNumber: i
+          index: rowIndex++
         });
         i--;
       }
     }
 
-    return diffs;
+    return rows;
   }, [leftText, rightText, ignoreCase, ignoreWhitespace]);
 
   const stats = useMemo(() => {
     const added = diffResults.filter(d => d.type === 'added').length;
     const removed = diffResults.filter(d => d.type === 'removed').length;
+    const modified = diffResults.filter(d => d.type === 'modified').length;
     const equal = diffResults.filter(d => d.type === 'equal').length;
 
-    return { added, removed, equal };
+    return { added, removed, modified, equal };
   }, [diffResults]);
 
-  // Get only the diff lines (added/removed) with their original indices
+  // Get only the diff lines (added/removed/modified) with their original indices
   const diffOnlyLines = useMemo(() => {
-    return diffResults
-      .map((diff, idx) => ({ ...diff, index: idx }))
-      .filter(d => d.type === 'added' || d.type === 'removed');
+    return diffResults.filter(d => d.type === 'added' || d.type === 'removed' || d.type === 'modified');
   }, [diffResults]);
 
   // Reset current diff index when diff results change
@@ -333,6 +558,10 @@ const TextCompare: React.FC = () => {
           <span className="stat-value stat-equal">{stats.equal}</span>
         </div>
         <div className="stat">
+          <span className="stat-label">Modified:</span>
+          <span className="stat-value stat-modified">{stats.modified}</span>
+        </div>
+        <div className="stat">
           <span className="stat-label">Added:</span>
           <span className="stat-value stat-added">{stats.added}</span>
         </div>
@@ -426,36 +655,39 @@ const TextCompare: React.FC = () => {
             </div>
           ) : (
             <div className="diff-lines">
-              {diffResults.map((diff, index) => {
-                const isDiff = diff.type === 'added' || diff.type === 'removed';
+              {diffResults.map((row) => {
+                const isDiff = row.type === 'added' || row.type === 'removed' || row.type === 'modified';
                 return (
-                  <div 
-                    key={index} 
-                    className={`diff-line diff-${diff.type}`}
+                  <div
+                    key={row.index}
+                    className={`diff-row diff-${row.type}`}
                     ref={(el) => {
                       if (el && isDiff) {
-                        diffRefsMap.current.set(index, el);
+                        diffRefsMap.current.set(row.index, el);
                       } else if (!isDiff) {
-                        diffRefsMap.current.delete(index);
+                        diffRefsMap.current.delete(row.index);
                       }
                     }}
                   >
                     <div className="line-number left-num">
-                      {diff.leftLineNumber || ''}
+                      {row.leftLineNumber || ''}
                     </div>
-                    <div className="line-content left">
-                      {diff.leftLine !== undefined ? diff.leftLine : ''}
-                    </div>
-                    <div className="line-indicator">
-                      {diff.type === 'equal' && '='}
-                      {diff.type === 'added' && '+'}
-                      {diff.type === 'removed' && '-'}
+                    <div className={`line-content left ${row.type === 'removed' || row.type === 'modified' ? 'has-content' : ''}`}>
+                      {row.type === 'modified' && row.leftHtml ? (
+                        <span dangerouslySetInnerHTML={{ __html: row.leftHtml }} />
+                      ) : (
+                        row.leftContent || ''
+                      )}
                     </div>
                     <div className="line-number right-num">
-                      {diff.rightLineNumber || ''}
+                      {row.rightLineNumber || ''}
                     </div>
-                    <div className="line-content right">
-                      {diff.rightLine !== undefined ? diff.rightLine : ''}
+                    <div className={`line-content right ${row.type === 'added' || row.type === 'modified' ? 'has-content' : ''}`}>
+                      {row.type === 'modified' && row.rightHtml ? (
+                        <span dangerouslySetInnerHTML={{ __html: row.rightHtml }} />
+                      ) : (
+                        row.rightContent || ''
+                      )}
                     </div>
                   </div>
                 );
