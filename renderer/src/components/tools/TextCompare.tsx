@@ -292,12 +292,30 @@ const TextCompare: React.FC = () => {
         });
         i--;
         j--;
+      } else if (j > 0 && (i === 0 || dp[i][j - 1] > dp[i - 1][j])) {
+        // Better to skip right line (added)
+        rows.unshift({
+          rightLineNumber: j,
+          rightContent: rightLine,
+          type: 'added',
+          index: rowIndex++
+        });
+        j--;
+      } else if (i > 0 && (j === 0 || dp[i - 1][j] > dp[i][j - 1])) {
+        // Better to skip left line (removed)
+        rows.unshift({
+          leftLineNumber: i,
+          leftContent: leftLine,
+          type: 'removed',
+          index: rowIndex++
+        });
+        i--;
       } else if (i > 0 && j > 0) {
-        // Both lines exist but are different
+        // Both exist and are different, check similarity
         const similarity = getSimilarity(leftLine, rightLine);
 
-        if (similarity > 0.4) {
-          // Lines are similar - show as modified on same row with inline diff
+        if (similarity > 0.6) {
+          // High similarity - show as modified on same row
           const { leftHtml, rightHtml } = getInlineDiff(leftLine, rightLine);
           rows.unshift({
             leftLineNumber: i,
@@ -312,38 +330,17 @@ const TextCompare: React.FC = () => {
           i--;
           j--;
         } else {
-          // Lines are too different - decide which to show based on LCS
-          if (dp[i - 1][j] >= dp[i][j - 1]) {
-            // Show removed line on left, empty on right
-            rows.unshift({
-              leftLineNumber: i,
-              leftContent: leftLine,
-              type: 'removed',
-              index: rowIndex++
-            });
-            i--;
-          } else {
-            // Show added line on right, empty on left
-            rows.unshift({
-              rightLineNumber: j,
-              rightContent: rightLine,
-              type: 'added',
-              index: rowIndex++
-            });
-            j--;
-          }
+          // Low similarity - show as separate removed and added
+          rows.unshift({
+            leftLineNumber: i,
+            leftContent: leftLine,
+            type: 'removed',
+            index: rowIndex++
+          });
+          i--;
         }
-      } else if (j > 0) {
-        // Only right line exists - added
-        rows.unshift({
-          rightLineNumber: j,
-          rightContent: rightLine,
-          type: 'added',
-          index: rowIndex++
-        });
-        j--;
       } else if (i > 0) {
-        // Only left line exists - removed
+        // Only left exists
         rows.unshift({
           leftLineNumber: i,
           leftContent: leftLine,
@@ -351,6 +348,15 @@ const TextCompare: React.FC = () => {
           index: rowIndex++
         });
         i--;
+      } else if (j > 0) {
+        // Only right exists
+        rows.unshift({
+          rightLineNumber: j,
+          rightContent: rightLine,
+          type: 'added',
+          index: rowIndex++
+        });
+        j--;
       }
     }
 

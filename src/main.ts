@@ -39,7 +39,8 @@ function createWindow() {
     height: 800,
     minWidth: 800,
     minHeight: 600,
-    titleBarStyle: 'hiddenInset',
+    titleBarStyle: 'hidden',
+    trafficLightPosition: { x: 12, y: 16 },
     icon: !appIcon.isEmpty() ? appIcon : undefined,
     webPreferences: {
       nodeIntegration: false,

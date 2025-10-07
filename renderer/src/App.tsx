@@ -84,13 +84,18 @@ const App: React.FC = () => {
   return (
     <SettingsProvider>
       <div className="app">
-        <Sidebar
-          activeTool={activeTool}
-          onSelectTool={setActiveTool}
-        />
-        <main className="main-content">
-          {renderTool()}
-        </main>
+        <div className="app-body">
+          <Sidebar
+            activeTool={activeTool}
+            onSelectTool={setActiveTool}
+          />
+          <main className="main-content">
+            {renderTool()}
+          </main>
+        </div>
+        <div className="title-bar">
+          <div className="title-bar-drag-region"></div>
+        </div>
       </div>
     </SettingsProvider>
   );
