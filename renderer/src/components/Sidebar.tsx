@@ -16,6 +16,7 @@ const allTools = [
   { id: 'text-compare' as ToolType, name: 'Text Compare', icon: '⚖️', feature: 'textCompare' },
   { id: 'regex-tester' as ToolType, name: 'RegEx Tester', icon: '🔍', feature: 'regexTester' },
   { id: 'lorem-ipsum' as ToolType, name: 'Lorem Ipsum', icon: '📝', feature: 'loremIpsum' },
+  { id: 'timestamp-converter' as ToolType, name: 'Timestamp Converter', icon: '⏱️', feature: 'timestampConverter' },
   { id: 'repo-to-context' as ToolType, name: 'Repo to Context', icon: '📦', feature: 'repoToContext' },
 ];
 

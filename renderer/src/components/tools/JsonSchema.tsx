@@ -10,9 +10,10 @@ const JsonSchema: React.FC = () => {
       return '';
     }
   });
-  
+
   const [output, setOutput] = useState('');
   const [error, setError] = useState('');
+  const [isHelpExpanded, setIsHelpExpanded] = useState(false);
 
   // Save state to localStorage
   useEffect(() => {
@@ -197,8 +198,18 @@ const JsonSchema: React.FC = () => {
       </div>
 
       <div className="help-panel">
-        <h3>📚 JSON Schema Quick Reference</h3>
-        <div className="help-content">
+        <div
+          className="help-header"
+          onClick={() => setIsHelpExpanded(!isHelpExpanded)}
+          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+        >
+          <h3>📚 JSON Schema Quick Reference</h3>
+          <span style={{ fontSize: '20px', transition: 'transform 0.3s', transform: isHelpExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+            ▼
+          </span>
+        </div>
+        {isHelpExpanded && (
+          <div className="help-content">
           <p className="help-intro">
             This tool automatically generates JSON Schema from your JSON data. The schema describes the structure and types of your data.
           </p>
@@ -277,6 +288,7 @@ const JsonSchema: React.FC = () => {
             </div>
           </div>
         </div>
+        )}
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ const JsonQuery: React.FC = () => {
   });
   const [error, setError] = useState('');
   const [jsonError, setJsonError] = useState('');
+  const [isHelpExpanded, setIsHelpExpanded] = useState(false);
 
   // Save state to localStorage
   useEffect(() => {
@@ -292,8 +293,18 @@ const JsonQuery: React.FC = () => {
       )}
 
       <div className="help-panel">
-        <h3>JSONPath Syntax Quick Reference</h3>
-        <div className="help-grid">
+        <div
+          className="help-header"
+          onClick={() => setIsHelpExpanded(!isHelpExpanded)}
+          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+        >
+          <h3>JSONPath Syntax Quick Reference</h3>
+          <span style={{ fontSize: '20px', transition: 'transform 0.3s', transform: isHelpExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+            ▼
+          </span>
+        </div>
+        {isHelpExpanded && (
+          <div className="help-grid">
           <div className="help-item">
             <code>$</code>
             <span>Root object</span>
@@ -327,6 +338,7 @@ const JsonQuery: React.FC = () => {
             <span>Filter expression</span>
           </div>
         </div>
+        )}
       </div>
     </div>
   );

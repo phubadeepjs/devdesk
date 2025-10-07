@@ -1,0 +1,282 @@
+.timestamp-converter {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.timestamp-converter .tool-header {
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.timestamp-converter .tool-header h2 {
+  font-size: 1.8em;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 8px;
+}
+
+.timestamp-converter .tool-description {
+  color: #888;
+  font-size: 0.9em;
+}
+
+.timestamp-converter .section-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.timestamp-converter .section-card {
+  background: #252525;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.timestamp-converter .section-title {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #4a9eff;
+  margin: 0;
+}
+
+.timestamp-converter .current-timestamp {
+  text-align: center;
+}
+
+.timestamp-converter .timestamp-display {
+  font-size: 2.5em;
+  font-weight: 700;
+  color: #fff;
+  margin: 12px 0;
+  font-family: 'SF Mono', Monaco, monospace;
+  letter-spacing: 2px;
+}
+
+.timestamp-converter .timestamp-label {
+  font-size: 0.85em;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.timestamp-converter .time-display {
+  font-size: 1.1em;
+  color: #b0b0b0;
+  margin-top: 8px;
+}
+
+.timestamp-converter .btn-copy {
+  padding: 8px 16px;
+  background: #3a3a3a;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #e0e0e0;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9em;
+  align-self: center;
+}
+
+.timestamp-converter .btn-copy:hover {
+  background: #4a4a4a;
+  border-color: #555;
+}
+
+.timestamp-converter .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.timestamp-converter .input-field {
+  width: 100%;
+  padding: 10px 12px;
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.95em;
+  font-family: 'SF Mono', Monaco, monospace;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.timestamp-converter .input-field:focus {
+  border-color: #4a9eff;
+  background: #1a1a1a;
+}
+
+.timestamp-converter .radio-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.timestamp-converter .radio-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  color: #b0b0b0;
+  font-size: 0.9em;
+}
+
+.timestamp-converter .radio-label input[type="radio"] {
+  cursor: pointer;
+}
+
+.timestamp-converter .help-text {
+  font-size: 0.85em;
+  color: #888;
+  margin-top: -8px;
+}
+
+.timestamp-converter .btn-convert {
+  width: 100%;
+  padding: 12px;
+  background: #4a9eff;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 0.95em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.timestamp-converter .btn-convert:hover {
+  background: #3a8eef;
+}
+
+.timestamp-converter .error-message {
+  padding: 12px 16px;
+  background: rgba(204, 51, 51, 0.15);
+  border: 1px solid rgba(204, 51, 51, 0.3);
+  border-radius: 6px;
+  color: #ff6b6b;
+  font-size: 0.9em;
+}
+
+.timestamp-converter .error-message strong {
+  color: #ff4444;
+}
+
+.timestamp-converter .date-inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.timestamp-converter .date-label {
+  font-size: 0.85em;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.timestamp-converter .date-input-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.timestamp-converter .date-input {
+  padding: 8px 10px;
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.9em;
+  font-family: 'SF Mono', Monaco, monospace;
+  text-align: center;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.timestamp-converter .date-input:focus {
+  border-color: #4a9eff;
+  background: #1a1a1a;
+}
+
+.timestamp-converter .result-table {
+  width: 100%;
+  background: #1e1e1e;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #333;
+}
+
+.timestamp-converter .result-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.timestamp-converter .result-table th {
+  background: #2a2a2a;
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #e0e0e0;
+  font-size: 0.9em;
+  border-bottom: 1px solid #333;
+}
+
+.timestamp-converter .result-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #2a2a2a;
+  font-family: 'SF Mono', Monaco, monospace;
+  font-size: 0.85em;
+  color: #b0b0b0;
+}
+
+.timestamp-converter .result-table tr:last-child td {
+  border-bottom: none;
+}
+
+.timestamp-converter .result-table td:first-child {
+  color: #9cdcfe;
+  font-weight: 500;
+}
+
+.timestamp-converter .timestamp-result {
+  text-align: center;
+  padding: 16px;
+  background: #1e1e1e;
+  border-radius: 6px;
+  border: 1px solid #333;
+}
+
+.timestamp-converter .timestamp-result-value {
+  font-size: 1.8em;
+  font-weight: 700;
+  color: #4a9eff;
+  font-family: 'SF Mono', Monaco, monospace;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 900px) {
+  .timestamp-converter .section-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .timestamp-converter .date-inputs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .timestamp-converter .timestamp-display {
+    font-size: 2em;
+  }
+
+  .timestamp-converter .tool-header h2 {
+    font-size: 1.5em;
+  }
+}

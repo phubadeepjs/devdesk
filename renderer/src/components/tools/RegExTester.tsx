@@ -31,6 +31,7 @@ const RegExTester: React.FC = () => {
     }
   });
   const [error, setError] = useState('');
+  const [isHelpExpanded, setIsHelpExpanded] = useState(false);
 
   // Save state to localStorage
   useEffect(() => {
@@ -360,6 +361,163 @@ const RegExTester: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* Helper Section */}
+      <div className="help-panel">
+        <div
+          className="help-header"
+          onClick={() => setIsHelpExpanded(!isHelpExpanded)}
+          style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}
+        >
+          <h3>🔍 RegEx Syntax Quick Reference</h3>
+          <span style={{ fontSize: '20px', transition: 'transform 0.3s', transform: isHelpExpanded ? 'rotate(180deg)' : 'rotate(0deg)' }}>
+            ▼
+          </span>
+        </div>
+        {isHelpExpanded && (
+          <div className="help-content">
+            <div className="help-grid">
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>.</code>
+                  <span className="help-badge">Character</span>
+                </div>
+                <p>Matches any single character except newline</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>\d</code>
+                  <span className="help-badge">Character</span>
+                </div>
+                <p>Matches any digit (0-9)</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>\w</code>
+                  <span className="help-badge">Character</span>
+                </div>
+                <p>Matches any word character (a-z, A-Z, 0-9, _)</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>\s</code>
+                  <span className="help-badge">Character</span>
+                </div>
+                <p>Matches any whitespace character</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>^</code>
+                  <span className="help-badge">Anchor</span>
+                </div>
+                <p>Matches the start of a line</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>$</code>
+                  <span className="help-badge">Anchor</span>
+                </div>
+                <p>Matches the end of a line</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>*</code>
+                  <span className="help-badge">Quantifier</span>
+                </div>
+                <p>Matches 0 or more times</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>+</code>
+                  <span className="help-badge">Quantifier</span>
+                </div>
+                <p>Matches 1 or more times</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>?</code>
+                  <span className="help-badge">Quantifier</span>
+                </div>
+                <p>Matches 0 or 1 time</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>{'{n}'}</code>
+                  <span className="help-badge">Quantifier</span>
+                </div>
+                <p>Matches exactly n times</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>{'{n,m}'}</code>
+                  <span className="help-badge">Quantifier</span>
+                </div>
+                <p>Matches between n and m times</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>[abc]</code>
+                  <span className="help-badge">Set</span>
+                </div>
+                <p>Matches any character in the set</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>[^abc]</code>
+                  <span className="help-badge">Set</span>
+                </div>
+                <p>Matches any character NOT in the set</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>(abc)</code>
+                  <span className="help-badge">Group</span>
+                </div>
+                <p>Capturing group</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>(?:abc)</code>
+                  <span className="help-badge">Group</span>
+                </div>
+                <p>Non-capturing group</p>
+              </div>
+
+              <div className="help-item">
+                <div className="help-item-header">
+                  <code>a|b</code>
+                  <span className="help-badge">Alternation</span>
+                </div>
+                <p>Matches a or b</p>
+              </div>
+            </div>
+
+            <div style={{ marginTop: '20px', padding: '12px', background: 'rgba(74, 158, 255, 0.1)', borderRadius: '6px', borderLeft: '3px solid #4a9eff' }}>
+              <h4 style={{ margin: '0 0 8px 0', color: '#4a9eff' }}>Flags:</h4>
+              <div style={{ display: 'grid', gap: '8px' }}>
+                <div><code>g</code> - Global: Find all matches</div>
+                <div><code>i</code> - Case insensitive</div>
+                <div><code>m</code> - Multiline: ^ and $ match line boundaries</div>
+                <div><code>s</code> - Dot all: . matches newline</div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

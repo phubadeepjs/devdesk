@@ -6,6 +6,7 @@ import TextCompare from './components/tools/TextCompare';
 import RegExTester from './components/tools/RegExTester';
 import JsonQuery from './components/tools/JsonQuery';
 import LoremIpsum from './components/tools/LoremIpsum';
+import TimestampConverter from './components/tools/TimestampConverter';
 import './styles/App.css';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { FEATURES } from './config';
@@ -15,7 +16,7 @@ const RepoToContext = FEATURES.repoToContext
   ? React.lazy(() => import('./components/tools/RepoToContext'))
   : null;
 
-export type ToolType = 'json-formatter' | 'json-schema' | 'text-compare' | 'repo-to-context' | 'regex-tester' | 'json-query' | 'lorem-ipsum';
+export type ToolType = 'json-formatter' | 'json-schema' | 'text-compare' | 'repo-to-context' | 'regex-tester' | 'json-query' | 'lorem-ipsum' | 'timestamp-converter';
 
 const App: React.FC = () => {
   const [activeTool, setActiveTool] = useState<ToolType>('json-formatter');
@@ -73,6 +74,8 @@ const App: React.FC = () => {
         return <JsonQuery />;
       case 'lorem-ipsum':
         return <LoremIpsum />;
+      case 'timestamp-converter':
+        return <TimestampConverter />;
       default:
         return null;
     }
@@ -81,7 +84,10 @@ const App: React.FC = () => {
   return (
     <SettingsProvider>
       <div className="app">
-        <Sidebar activeTool={activeTool} onSelectTool={setActiveTool} />
+        <Sidebar
+          activeTool={activeTool}
+          onSelectTool={setActiveTool}
+        />
         <main className="main-content">
           {renderTool()}
         </main>
