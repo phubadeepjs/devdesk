@@ -1,5 +1,5 @@
 {
-  "name": "phubadee-super-app",
+  "name": "devdesk",
   "version": "1.0.0",
   "description": "A super app with multiple utilities for productivity",
   "main": "dist/main.js",
@@ -46,8 +46,8 @@
     "jsonpath-plus": "^10.3.0",
     "pdfkit": "^0.17.2",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.21.0"
+    "react-dom": "^18.2.0"
+
   },
   "build": {
     "appId": "com.devdisk.app",

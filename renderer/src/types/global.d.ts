@@ -5,10 +5,11 @@ declare global {
       getAutoLaunch: () => Promise<boolean>;
       setAutoLaunch: (enabled: boolean) => Promise<boolean>;
       selectFolder: () => Promise<string | null>;
-      processRepo: (repoPath: string) => Promise<{
+      processRepo: (repoPath: string, options?: { formats: string[] }) => Promise<{
         success: boolean;
-        pdfPath: string;
-        txtPath: string;
+        pdfPath?: string;
+        txtPath?: string;
+        mdPath?: string;
         outputDir: string;
       }>;
       openFile: (filePath: string) => Promise<boolean>;

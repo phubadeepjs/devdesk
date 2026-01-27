@@ -63,6 +63,11 @@
   height: 100%;
 }
 
+.main-content.no-scroll {
+  overflow: visible; /* Allow popups/widgets to overflow without clipping */
+  padding: 0;
+}
+
 .coming-soon {
   display: flex;
   flex-direction: column;
@@ -81,4 +86,3 @@
 .coming-soon p {
   font-size: 1.2em;
 }
-

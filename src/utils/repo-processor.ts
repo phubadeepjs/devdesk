@@ -211,5 +211,39 @@ export class RepoProcessor {
     fs.writeFileSync(outputPath, content, 'utf-8');
     this.log('✅ Text file generated successfully!\n');
   }
+
+  async generateMarkdown(outputPath: string): Promise<void> {
+    this.log('📝 Generating markdown file...\n');
+    
+    if (this.files.length === 0) {
+      await this.scanDirectory(this.repoPath);
+    }
+
+    let content = '';
+    const repoName = path.basename(this.repoPath);
+    
+    content += `# Repository: ${repoName}\n\n`;
+    
+    // Repository Structure
+    content += '## Repository Structure\n';
+    content += '```\n';
+    content += this.generateFileTree(this.repoPath);
+    content += '```\n\n';
+
+    // Files content
+    content += '## Files\n\n';
+
+    for (const file of this.files) {
+      const ext = path.extname(file.path).toLowerCase().replace('.', '');
+      
+      content += `### ${file.relativePath}\n`;
+      content += '```' + (ext || '') + '\n';
+      content += file.content + '\n';
+      content += '```\n\n';
+    }
+
+    fs.writeFileSync(outputPath, content, 'utf-8');
+    this.log('✅ Markdown file generated successfully!\n');
+  }
 }
 

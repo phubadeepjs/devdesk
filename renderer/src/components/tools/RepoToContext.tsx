@@ -8,7 +8,10 @@ const RepoToContext: React.FC = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [pdfPath, setPdfPath] = useState<string | null>(null);
   const [txtPath, setTxtPath] = useState<string | null>(null);
+  const [mdPath, setMdPath] = useState<string | null>(null);
   const [outputDir, setOutputDir] = useState<string | null>(null);
+  const [selectedFormat, setSelectedFormat] = useState<string>('all');
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     // Listen for progress updates
@@ -19,7 +22,7 @@ const RepoToContext: React.FC = () => {
     }
   }, []);
 
-  const processRepository = async () => {
+  const processRepository = async (formatOverride?: string) => {
     if (!repoPath.trim()) {
       setOutput('❌ Please enter a repository path\n');
       return;
@@ -33,21 +36,31 @@ const RepoToContext: React.FC = () => {
     setIsProcessing(true);
     setOutput('🚀 Starting repository processing...\n\n');
     setPdfPath(null);
+    setPdfPath(null);
     setTxtPath(null);
+    setMdPath(null);
     setOutputDir(null);
 
+    const targetFormat = formatOverride || selectedFormat;
+
     try {
-      const result = await window.electronAPI.processRepo(repoPath);
+      const formats = targetFormat === 'all' 
+        ? ['pdf', 'txt', 'md'] 
+        : [targetFormat];
+
+      const result = await window.electronAPI.processRepo(repoPath, { formats });
       
       if (result.success) {
-        setPdfPath(result.pdfPath);
-        setTxtPath(result.txtPath);
+        setPdfPath(result.pdfPath || null);
+        setTxtPath(result.txtPath || null);
+        setMdPath(result.mdPath || null);
         setOutputDir(result.outputDir);
         
         setOutput(prev => prev + '\n\n✅ Processing completed successfully!\n\n');
         setOutput(prev => prev + `📁 Output directory: ${result.outputDir}\n`);
-        setOutput(prev => prev + `📄 PDF: ${result.pdfPath}\n`);
-        setOutput(prev => prev + `📝 TXT: ${result.txtPath}\n`);
+        if (result.pdfPath) setOutput(prev => prev + `📄 PDF: ${result.pdfPath}\n`);
+        if (result.txtPath) setOutput(prev => prev + `📝 TXT: ${result.txtPath}\n`);
+        if (result.mdPath) setOutput(prev => prev + `📝 MD: ${result.mdPath}\n`);
       }
     } catch (err) {
       setOutput(prev => prev + '\n\n❌ Error: ' + (err instanceof Error ? err.message : String(err)) + '\n');
@@ -108,13 +121,40 @@ const RepoToContext: React.FC = () => {
         </div>
 
         <div className="button-group">
-          <button 
-            className="btn btn-primary" 
-            onClick={processRepository}
-            disabled={isProcessing}
-          >
-            {isProcessing ? '⏳ Processing...' : '🚀 Generate Context'}
-          </button>
+          <div className="dropdown-container">
+            <button 
+              className="btn btn-primary dropdown-trigger"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              disabled={isProcessing}
+            >
+              {isProcessing ? '⏳ Processing...' : (
+                <>
+                  {selectedFormat === 'all' && '🚀 Generate All'}
+                  {selectedFormat === 'pdf' && '📄 Generate PDF'}
+                  {selectedFormat === 'txt' && '📝 Generate TXT'}
+                  {selectedFormat === 'md' && '📝 Generate MD'}
+                  <span className="dropdown-arrow">▼</span>
+                </>
+              )}
+            </button>
+            
+            {isDropdownOpen && !isProcessing && (
+              <div className="dropdown-menu">
+                <button className={`dropdown-item ${selectedFormat === 'all' ? 'active' : ''}`} onClick={() => { setSelectedFormat('all'); setIsDropdownOpen(false); processRepository('all'); }}>
+                  🚀 All Formats
+                </button>
+                <button className={`dropdown-item ${selectedFormat === 'pdf' ? 'active' : ''}`} onClick={() => { setSelectedFormat('pdf'); setIsDropdownOpen(false); processRepository('pdf'); }}>
+                  📄 PDF Only
+                </button>
+                <button className={`dropdown-item ${selectedFormat === 'txt' ? 'active' : ''}`} onClick={() => { setSelectedFormat('txt'); setIsDropdownOpen(false); processRepository('txt'); }}>
+                  📝 Text Only
+                </button>
+                <button className={`dropdown-item ${selectedFormat === 'md' ? 'active' : ''}`} onClick={() => { setSelectedFormat('md'); setIsDropdownOpen(false); processRepository('md'); }}>
+                  📝 Markdown Only
+                </button>
+              </div>
+            )}
+          </div>
           {outputDir && (
             <button className="btn btn-secondary" onClick={openOutputFolder}>
               📂 Open Output Folder
@@ -123,18 +163,23 @@ const RepoToContext: React.FC = () => {
         </div>
       </div>
 
-      {(pdfPath || txtPath) && (
+      {(pdfPath || txtPath || mdPath) && (
         <div className="output-files">
           <h3>Generated Files:</h3>
           <div className="file-buttons">
             {pdfPath && (
               <button className="btn btn-file" onClick={() => openFile(pdfPath)}>
-                📄 Open PDF
+                📄 Open PDF file
               </button>
             )}
             {txtPath && (
               <button className="btn btn-file" onClick={() => openFile(txtPath)}>
-                📝 Open TXT
+                📝 Open Text file
+              </button>
+            )}
+            {mdPath && (
+              <button className="btn btn-file" onClick={() => openFile(mdPath)}>
+                📝 Open Markdown file
               </button>
             )}
           </div>
