@@ -15,6 +15,8 @@ declare global {
       openFile: (filePath: string) => Promise<boolean>;
       openFolder: (folderPath: string) => Promise<boolean>;
       onRepoProcessProgress: (callback: (text: string) => void) => void;
+      getGlobalShortcut: () => Promise<string>;
+      setGlobalShortcut: (shortcut: string) => Promise<boolean>;
     };
   }
 }

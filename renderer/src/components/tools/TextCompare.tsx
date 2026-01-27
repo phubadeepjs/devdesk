@@ -26,7 +26,10 @@ const TextCompare: React.FC = () => {
   const leftTextRef = useRef(leftText);
   const rightTextRef = useRef(rightText);
 
-  // Sync refs with state when state changes (e.g. initial load, swap, clear)
+  // Store editor instance to manipulate directly
+  const diffEditorRef = useRef<any>(null);
+
+  // Sync refs with state when state changes (e.g. initial load)
   useEffect(() => {
     leftTextRef.current = leftText;
   }, [leftText]);
@@ -34,13 +37,6 @@ const TextCompare: React.FC = () => {
   useEffect(() => {
     rightTextRef.current = rightText;
   }, [rightText]);
-
-  // Load state from localStorage - logic remains same but we use the refs for updates
-  // ... (existing state initialization is fine)
-
-  // Save state to localStorage
-  // We remove the useEffect hooks that saved on state change, 
-  // and instead save directly in the editor change event to avoid re-renders
 
   // Add no-scroll class to main content when component is mounted
   useEffect(() => {
@@ -56,6 +52,7 @@ const TextCompare: React.FC = () => {
   }, []);
 
   const handleEditorMount = (editor: any) => {
+    diffEditorRef.current = editor;
     const originalEditor = editor.getOriginalEditor();
     const modifiedEditor = editor.getModifiedEditor();
 
@@ -83,33 +80,25 @@ const TextCompare: React.FC = () => {
   };
 
   const clearAll = () => {
-    // These actions SHOULD trigger a re-render to update the editor
+    // 1. Clear State
     setLeftText('');
     setRightText('');
+    
+    // 2. Clear Refs
     leftTextRef.current = '';
     rightTextRef.current = '';
+
+    // 3. Clear LocalStorage
     try {
       localStorage.removeItem('tc.leftText');
       localStorage.removeItem('tc.rightText');
     } catch {}
-  };
 
-  const swapTexts = () => {
-    // Swap using current ref values
-    const currentLeft = leftTextRef.current;
-    const currentRight = rightTextRef.current;
-    
-    setLeftText(currentRight);
-    setRightText(currentLeft);
-    
-    leftTextRef.current = currentRight;
-    rightTextRef.current = currentLeft;
-    
-    // Update local storage immediately
-    try {
-        localStorage.setItem('tc.leftText', currentRight);
-        localStorage.setItem('tc.rightText', currentLeft);
-    } catch {}
+    // 4. DIRECTLY Clear Editor Models (Fixes the issue where text stays visible)
+    if (diffEditorRef.current) {
+        diffEditorRef.current.getOriginalEditor().setValue('');
+        diffEditorRef.current.getModifiedEditor().setValue('');
+    }
   };
 
   return (
@@ -126,9 +115,6 @@ const TextCompare: React.FC = () => {
         </div>
 
         <div className="button-group">
-          <button className="btn btn-secondary" onClick={swapTexts}>
-            ⇄ Swap
-          </button>
           <button className="btn btn-danger" onClick={clearAll}>
             🗑️ Clear All
           </button>

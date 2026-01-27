@@ -5,6 +5,7 @@ import { IpcManager } from './ipc/IpcManager';
 import { SystemHandler } from './ipc/handlers/SystemHandler';
 import { FileHandler } from './ipc/handlers/FileHandler';
 import { RepoHandler } from './ipc/handlers/RepoHandler';
+import { SettingsHandler } from './ipc/handlers/SettingsHandler';
 
 // Initialize managers
 const windowManager = WindowManager.getInstance();
@@ -19,7 +20,8 @@ app.whenReady().then(() => {
   ipcManager.registerHandlers([
     new SystemHandler(),
     new FileHandler(),
-    new RepoHandler()
+    new RepoHandler(),
+    new SettingsHandler()
   ]);
 });
 

@@ -12,6 +12,8 @@ contextBridge.exposeInMainWorld('electronAPI', {
   openFolder: (folderPath: string) => ipcRenderer.invoke('open-folder', folderPath),
   onRepoProcessProgress: (callback: (text: string) => void) => {
     ipcRenderer.on('repo-process-progress', (_event, text) => callback(text));
-  }
+  },
+  getGlobalShortcut: () => ipcRenderer.invoke('get-global-shortcut'),
+  setGlobalShortcut: (shortcut: string) => ipcRenderer.invoke('set-global-shortcut', shortcut),
 });
 

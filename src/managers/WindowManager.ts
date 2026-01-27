@@ -1,4 +1,4 @@
-import { BrowserWindow, app, screen, nativeImage, shell } from 'electron';
+import { BrowserWindow, app, screen, nativeImage, shell, globalShortcut } from 'electron';
 import * as path from 'path';
 
 export class WindowManager {
@@ -50,15 +50,35 @@ export class WindowManager {
   public showWindow(): void {
     if (!this.mainWindow) return;
 
-    const cursor = screen.getCursorScreenPoint();
-    const display = screen.getDisplayNearestPoint(cursor);
-    const bounds = display.workArea;
-    const x = Math.max(bounds.x + bounds.width - 400, bounds.x);
-    const y = bounds.y + 60;
-    
-    this.mainWindow.setPosition(Math.floor(x), Math.floor(y), false);
+    // Previously forced alignment to right side
+    // const cursor = screen.getCursorScreenPoint();
+    // const display = screen.getDisplayNearestPoint(cursor);
+    // const bounds = display.workArea;
+    // const x = Math.max(bounds.x + bounds.width - 400, bounds.x);
+    // const y = bounds.y + 60;
+    // this.mainWindow.setPosition(Math.floor(x), Math.floor(y), false);
+
     this.mainWindow.show();
     this.mainWindow.focus();
+  }
+
+  public registerGlobalShortcut(accelerator: string): boolean {
+    // Unregister all global shortcuts to avoid conflicts (or track locally if we had multiple)
+    globalShortcut.unregisterAll();
+
+    try {
+      const ret = globalShortcut.register(accelerator, () => {
+        this.toggleWindow();
+      });
+
+      if (!ret) {
+        console.warn('Registration failed for shortcut:', accelerator);
+      }
+      return ret;
+    } catch (e) {
+      console.error('Failed to register shortcut:', e);
+      return false;
+    }
   }
 
   public createWindow(): void {
@@ -74,6 +94,23 @@ export class WindowManager {
     if (process.platform === 'darwin' && !appIcon.isEmpty()) {
        try { app.dock.setIcon(appIcon); } catch {}
     }
+
+    if (process.platform === 'darwin' && !appIcon.isEmpty()) {
+       try { app.dock.setIcon(appIcon); } catch {}
+    }
+
+    // Attempt to register default if not set
+    // This is now handled by initial call from SettingsHandler or lazily
+    // But to ensure it works on first run, we can register default here
+    // However, better to let the persistence logic handle it. 
+    // For now, removing the hardcoded registration.
+    
+    // Actually, we should probably read the setting here if possible, but that couples it.
+    // Let's rely on SettingsHandler calling registerGlobalShortcut on app start? 
+    // Wait, SettingsHandler is initialized in main.ts, but when does it register?
+    // It's just setting up IPC. 
+    // We should probably trigger an initial registration. 
+    // We'll update main.ts to trigger it or have SettingsHandler do it in constructor.
 
     this.mainWindow = new BrowserWindow({
       width: 1200,

@@ -129,7 +129,7 @@ const RepoToContext: React.FC = () => {
             >
               {isProcessing ? '⏳ Processing...' : (
                 <>
-                  {selectedFormat === 'all' && '🚀 Generate All'}
+                  {selectedFormat === 'all' && '🚀 Generate'}
                   {selectedFormat === 'pdf' && '📄 Generate PDF'}
                   {selectedFormat === 'txt' && '📝 Generate TXT'}
                   {selectedFormat === 'md' && '📝 Generate MD'}
