@@ -1,0 +1,359 @@
+.prompt-generator {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  gap: 20px;
+}
+
+.prompt-generator .tool-header {
+  margin-bottom: 10px;
+}
+
+.prompt-generator .tool-header h2 {
+  margin: 0 0 8px 0;
+  color: #e0e0e0;
+  font-size: 24px;
+}
+
+.prompt-generator .tool-description {
+  margin: 0;
+  color: #888;
+  font-size: 14px;
+}
+
+.prompt-generator .controls {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
+}
+
+.prompt-generator .control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.prompt-generator .control-group label {
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.prompt-generator .control-group select {
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+  min-width: 180px;
+}
+
+.prompt-generator .control-group select:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.prompt-generator .control-group select:focus {
+  border-color: #0066cc;
+}
+
+.prompt-generator .template-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.prompt-generator .new-template-input {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.prompt-generator .new-template-input input {
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 14px;
+  outline: none;
+  min-width: 200px;
+}
+
+.prompt-generator .new-template-input input:focus {
+  border-color: #0066cc;
+}
+
+.prompt-generator .btn-new,
+.prompt-generator .btn-delete {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #e0e0e0;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.prompt-generator .btn-new:hover {
+  background: rgba(0, 102, 204, 0.2);
+  border-color: rgba(0, 102, 204, 0.3);
+  color: #4da3ff;
+}
+
+.prompt-generator .btn-delete:hover {
+  background: rgba(220, 38, 38, 0.2);
+  border-color: rgba(220, 38, 38, 0.3);
+  color: #ff6b6b;
+}
+
+.prompt-generator .btn-confirm,
+.prompt-generator .btn-cancel {
+  padding: 6px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.prompt-generator .btn-confirm {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.prompt-generator .btn-confirm:hover {
+  background: rgba(34, 197, 94, 0.3);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+.prompt-generator .btn-cancel {
+  background: rgba(220, 38, 38, 0.2);
+  color: #ff6b6b;
+}
+
+.prompt-generator .btn-cancel:hover {
+  background: rgba(220, 38, 38, 0.3);
+  border-color: rgba(220, 38, 38, 0.3);
+}
+
+.prompt-generator .format-control {
+  margin-left: auto;
+}
+
+.prompt-generator .format-control label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: #aaa;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.prompt-generator .format-control input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.prompt-generator .control-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.prompt-generator .control-actions button {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #e0e0e0;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.prompt-generator .control-actions button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.prompt-generator .editor-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+.prompt-generator .editor-panel {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.prompt-generator .prompt-panel {
+  flex: 2;
+  min-height: 200px;
+}
+
+.prompt-generator .variables-panel {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  max-height: 300px;
+}
+
+.prompt-generator .output-panel {
+  flex: 1;
+  min-height: 150px;
+}
+
+.prompt-generator .panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.prompt-generator .panel-header h3 {
+  margin: 0;
+  color: #e0e0e0;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.prompt-generator .info-text {
+  color: #666;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.prompt-generator .panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.prompt-generator .char-count {
+  color: #666;
+  font-size: 12px;
+}
+
+.prompt-generator .btn-copy {
+  padding: 4px 10px;
+  background: rgba(0, 102, 204, 0.2);
+  border: 1px solid rgba(0, 102, 204, 0.3);
+  border-radius: 4px;
+  color: #4da3ff;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.prompt-generator .btn-copy:hover {
+  background: rgba(0, 102, 204, 0.3);
+  border-color: rgba(0, 102, 204, 0.5);
+}
+
+.prompt-generator textarea {
+  flex: 1;
+  padding: 16px;
+  background: transparent;
+  border: none;
+  color: #e0e0e0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+}
+
+.prompt-generator textarea::placeholder {
+  color: #555;
+}
+
+.prompt-generator textarea:read-only {
+  color: #aaa;
+}
+
+.prompt-generator .variables-list {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+}
+
+.prompt-generator .variable-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prompt-generator .variable-input label {
+  color: #aaa;
+  font-size: 13px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.prompt-generator .variable-input textarea {
+  padding: 10px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+  transition: all 0.2s;
+  min-height: 60px;
+}
+
+.prompt-generator .variable-input textarea:focus {
+  border-color: #0066cc;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.prompt-generator .format-info {
+  padding: 12px 16px;
+  background: rgba(0, 102, 204, 0.1);
+  border-top: 1px solid rgba(0, 102, 204, 0.3);
+  color: #4da3ff;
+  font-size: 13px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .prompt-generator .controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .prompt-generator .format-control {
+    margin-left: 0;
+  }
+}

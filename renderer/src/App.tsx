@@ -8,6 +8,8 @@ import RegExTester from './components/tools/RegExTester';
 import JsonQuery from './components/tools/JsonQuery';
 import LoremIpsum from './components/tools/LoremIpsum';
 import TimestampConverter from './components/tools/TimestampConverter';
+import EncoderDecoder from './components/tools/EncoderDecoder';
+import PromptGenerator from './components/tools/PromptGenerator';
 import Settings from './components/Settings';
 import { SettingsProvider } from './contexts/SettingsContext';
 import { FEATURES } from './config';
@@ -71,6 +73,8 @@ const App: React.FC = () => {
             <Route path="regex-tester" element={<RegExTester />} />
             <Route path="lorem-ipsum" element={<LoremIpsum />} />
             <Route path="timestamp-converter" element={<TimestampConverter />} />
+            <Route path="base64-encoder" element={<EncoderDecoder />} />
+            <Route path="prompt-generator" element={<PromptGenerator />} />
             <Route path="repo-to-context" element={<RepoToContextRoute />} />
             <Route path="settings" element={<Settings />} />
           </Route>

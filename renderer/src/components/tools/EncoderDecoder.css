@@ -1,0 +1,214 @@
+.encoder-decoder {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  gap: 20px;
+}
+
+.encoder-decoder .tool-header {
+  margin-bottom: 10px;
+}
+
+.encoder-decoder .tool-header h2 {
+  margin: 0 0 8px 0;
+  color: #e0e0e0;
+  font-size: 24px;
+}
+
+.encoder-decoder .tool-description {
+  margin: 0;
+  color: #888;
+  font-size: 14px;
+}
+
+.encoder-decoder .controls {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-wrap: wrap;
+}
+
+.encoder-decoder .control-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.encoder-decoder .control-group label {
+  color: #888;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.encoder-decoder .mode-toggle {
+  display: flex;
+  gap: 0;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.encoder-decoder .mode-toggle button {
+  padding: 6px 16px;
+  border: none;
+  background: transparent;
+  color: #888;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.encoder-decoder .mode-toggle button.active {
+  background: #0066cc;
+  color: white;
+}
+
+.encoder-decoder .mode-toggle button:hover:not(.active) {
+  color: #e0e0e0;
+}
+
+.encoder-decoder .control-group select {
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.encoder-decoder .control-group select:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.encoder-decoder .control-group select:focus {
+  border-color: #0066cc;
+}
+
+.encoder-decoder .control-actions {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.encoder-decoder .control-actions button {
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #e0e0e0;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.encoder-decoder .control-actions button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.encoder-decoder .editor-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  flex: 1;
+  min-height: 0;
+}
+
+.encoder-decoder .editor-panel {
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+.encoder-decoder .panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.encoder-decoder .panel-header h3 {
+  margin: 0;
+  color: #e0e0e0;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.encoder-decoder .panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.encoder-decoder .char-count {
+  color: #666;
+  font-size: 12px;
+}
+
+.encoder-decoder .btn-copy {
+  padding: 4px 10px;
+  background: rgba(0, 102, 204, 0.2);
+  border: 1px solid rgba(0, 102, 204, 0.3);
+  border-radius: 4px;
+  color: #4da3ff;
+  cursor: pointer;
+  font-size: 12px;
+  transition: all 0.2s;
+}
+
+.encoder-decoder .btn-copy:hover {
+  background: rgba(0, 102, 204, 0.3);
+  border-color: rgba(0, 102, 204, 0.5);
+}
+
+.encoder-decoder textarea {
+  flex: 1;
+  padding: 16px;
+  background: transparent;
+  border: none;
+  color: #e0e0e0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+}
+
+.encoder-decoder textarea::placeholder {
+  color: #555;
+}
+
+.encoder-decoder textarea:read-only {
+  color: #aaa;
+}
+
+.encoder-decoder .error-message {
+  padding: 12px 16px;
+  background: rgba(220, 38, 38, 0.1);
+  border-top: 1px solid rgba(220, 38, 38, 0.3);
+  color: #ff6b6b;
+  font-size: 13px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .encoder-decoder .editor-container {
+    grid-template-columns: 1fr;
+  }
+}

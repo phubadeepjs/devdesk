@@ -26,6 +26,8 @@ export const FEATURES = {
   jsonQuery: true,
   loremIpsum: true,
   timestampConverter: true,
+  base64Encoder: true,
+  promptGenerator: true,
 
   // Desktop-only features
   repoToContext: IS_ELECTRON,
