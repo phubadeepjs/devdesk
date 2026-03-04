@@ -1,0 +1,343 @@
+/* ── Root (same pattern as JsonFormatter) ─────────────────────────── */
+.json-to-ts {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.json-to-ts .tool-header {
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.json-to-ts .tool-header h2 {
+  font-size: 1.8em;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 8px;
+}
+
+.json-to-ts .tool-description {
+  color: #888;
+  font-size: 0.9em;
+}
+
+/* ── Controls Bar ──────────────────────────────────────────────────── */
+.json-to-ts .jts-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  background: #252525;
+  border-radius: 6px;
+  border: 1px solid #333;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.json-to-ts .jts-option-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.json-to-ts .jts-option-group > label {
+  color: #b0b0b0;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.json-to-ts .jts-name-input {
+  padding: 6px 10px;
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #e0e0e0;
+  font-size: 0.9em;
+  width: 110px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.json-to-ts .jts-name-input:focus {
+  border-color: #0066cc;
+}
+
+.json-to-ts .jts-toggle {
+  display: flex;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 6px;
+  padding: 2px;
+  gap: 2px;
+}
+
+.json-to-ts .jts-toggle button {
+  padding: 5px 12px;
+  border: none;
+  background: transparent;
+  color: #888;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 0.85em;
+  font-family: "SF Mono", Monaco, Consolas, monospace;
+  transition: all 0.2s;
+}
+
+.json-to-ts .jts-toggle button.active {
+  background: #0066cc;
+  color: #fff;
+}
+
+.json-to-ts .jts-toggle button:hover:not(.active) {
+  color: #e0e0e0;
+}
+
+.json-to-ts .jts-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #b0b0b0;
+  font-size: 0.9em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.json-to-ts .jts-checkbox-label input[type="checkbox"] {
+  accent-color: #0066cc;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.json-to-ts .jts-option-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.json-to-ts .jts-btn-secondary {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  background: #3a3a3a;
+  color: #e0e0e0;
+}
+
+.json-to-ts .jts-btn-secondary:hover {
+  background: #4a4a4a;
+}
+
+.json-to-ts .jts-btn-danger {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  background: #cc3333;
+  color: white;
+}
+
+.json-to-ts .jts-btn-danger:hover {
+  background: #a32929;
+}
+
+/* ── Error ─────────────────────────────────────────────────────────── */
+.json-to-ts .jts-error {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: rgba(204, 51, 51, 0.15);
+  border: 1px solid #cc3333;
+  border-radius: 6px;
+  color: #ff6666;
+  font-size: 0.9em;
+  flex-shrink: 0;
+}
+
+.json-to-ts .jts-error strong {
+  color: #ff4444;
+}
+
+/* ── Editor Container (same as JsonFormatter) ──────────────────────── */
+.json-to-ts .editor-container {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.json-to-ts .editor-panel {
+  display: flex;
+  flex-direction: column;
+  background: #252525;
+  border: 1px solid #333;
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 0;
+  flex: 1 1 0;
+  width: 0;
+  min-width: 0;
+}
+
+.json-to-ts .panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #2a2a2a;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+
+.json-to-ts .panel-header h3 {
+  font-size: 1em;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin: 0;
+}
+
+.json-to-ts .panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.json-to-ts .char-count {
+  font-size: 0.85em;
+  color: #888;
+}
+
+.json-to-ts .editor-textarea {
+  flex: 1;
+  padding: 12px;
+  background: #1e1e1e;
+  border: none;
+  color: #e0e0e0;
+  font-family:
+    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New",
+    monospace;
+  font-size: 0.9em;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  white-space: pre;
+  overflow-x: auto;
+  overflow-y: auto;
+  min-height: 0;
+}
+
+.json-to-ts .editor-textarea::placeholder {
+  color: #555;
+}
+
+.json-to-ts .editor-textarea:focus {
+  background: #1a1a1a;
+}
+
+/* ── Output area ───────────────────────────────────────────────────── */
+.json-to-ts .editor-output {
+  flex: 1;
+  padding: 12px;
+  background: #1e1e1e;
+  border: none;
+  color: #e0e0e0;
+  font-family:
+    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New",
+    monospace;
+  font-size: 0.9em;
+  line-height: 1.5;
+  margin: 0;
+  overflow-x: auto;
+  overflow-y: auto;
+  white-space: pre;
+  min-height: 0;
+  user-select: text;
+  cursor: text;
+  outline: none;
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.json-to-ts .editor-output:focus {
+  background: #1a1a1a;
+  box-shadow: inset 0 0 0 2px rgba(0, 102, 204, 0.3);
+}
+
+.json-to-ts .editor-output:hover {
+  background: #1c1c1c;
+}
+
+.json-to-ts .editor-placeholder {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-family:
+    "SF Mono", Monaco, "Cascadia Code", "Roboto Mono", Consolas, "Courier New",
+    monospace;
+  font-size: 0.9em;
+  background: #1e1e1e;
+}
+
+/* ── Copy Button ───────────────────────────────────────────────────── */
+.jts-btn-copy {
+  padding: 6px 12px;
+  background: #3a3a3a;
+  border: none;
+  border-radius: 4px;
+  color: #e0e0e0;
+  font-size: 0.85em;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.jts-btn-copy:hover {
+  background: #4a4a4a;
+}
+
+.jts-btn-copy.copied {
+  background: rgba(81, 207, 102, 0.2);
+  color: #51cf66;
+}
+
+/* ── Syntax highlighting ───────────────────────────────────────────── */
+.ts-keyword {
+  color: #569cd6;
+}
+.ts-type {
+  color: #4ec9b0;
+}
+.ts-prop {
+  color: #9cdcfe;
+}
+.ts-primitive {
+  color: #4ec9b0;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .json-to-ts .editor-container {
+    flex-direction: column;
+  }
+
+  .json-to-ts .editor-panel {
+    width: 100%;
+    flex: 1 1 0;
+  }
+}

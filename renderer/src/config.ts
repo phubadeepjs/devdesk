@@ -4,17 +4,17 @@
  */
 
 // Check if building for web or desktop
-export const IS_WEB = import.meta.env.VITE_BUILD_TARGET === 'web';
+export const IS_WEB = import.meta.env.VITE_BUILD_TARGET === "web";
 
 // Check if running in Electron environment
-export const IS_ELECTRON = 
-  !IS_WEB && 
-  typeof window !== 'undefined' && 
-  typeof (window as any).electronAPI !== 'undefined';
+export const IS_ELECTRON =
+  !IS_WEB &&
+  typeof window !== "undefined" &&
+  typeof (window as any).electronAPI !== "undefined";
 
 // App metadata
-export const APP_NAME = 'DevDesk';
-export const APP_VERSION = '1.0.0';
+export const APP_NAME = "DevDesk";
+export const APP_VERSION = "1.0.0";
 
 // Feature flags based on environment
 export const FEATURES = {
@@ -28,6 +28,7 @@ export const FEATURES = {
   timestampConverter: true,
   base64Encoder: true,
   promptGenerator: true,
+  jsonToTs: true,
 
   // Desktop-only features
   repoToContext: IS_ELECTRON,
@@ -38,11 +39,10 @@ export const FEATURES = {
 
 // Log environment info in development
 if (import.meta.env.DEV) {
-  console.log('[DevDesk Config]', {
+  console.log("[DevDesk Config]", {
     IS_WEB,
     IS_ELECTRON,
     BUILD_TARGET: import.meta.env.VITE_BUILD_TARGET,
     FEATURES,
   });
 }
-
