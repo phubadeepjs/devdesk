@@ -234,10 +234,20 @@
   line-height: 1.5;
   resize: none;
   outline: none;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.json-to-ts.wrap-on .editor-textarea {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  overflow-x: hidden;
+}
+
+.json-to-ts.wrap-off .editor-textarea {
   white-space: pre;
   overflow-x: auto;
-  overflow-y: auto;
-  min-height: 0;
 }
 
 .json-to-ts .editor-textarea::placeholder {
@@ -261,9 +271,7 @@
   font-size: 0.9em;
   line-height: 1.5;
   margin: 0;
-  overflow-x: auto;
   overflow-y: auto;
-  white-space: pre;
   min-height: 0;
   user-select: text;
   cursor: text;
@@ -271,6 +279,17 @@
   transition:
     background 0.2s ease,
     box-shadow 0.2s ease;
+}
+
+.json-to-ts.wrap-on .editor-output {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: hidden;
+}
+
+.json-to-ts.wrap-off .editor-output {
+  white-space: pre;
+  overflow-x: auto;
 }
 
 .json-to-ts .editor-output:focus {

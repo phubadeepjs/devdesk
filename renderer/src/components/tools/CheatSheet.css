@@ -1,0 +1,282 @@
+/* ── Root Layout ───────────────────────────────────────────────────── */
+.cheat-sheet {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+  padding: 0;
+}
+
+.cheat-sheet .tool-header {
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+.cheat-sheet .tool-header h2 {
+  font-size: 1.8em;
+  font-weight: 600;
+  color: #e0e0e0;
+  margin-bottom: 8px;
+}
+
+.cheat-sheet .tool-description {
+  color: #888;
+  font-size: 0.95em;
+}
+
+/* ── Table Controls ─────────────────────────────────────────────────── */
+.cs-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: #252525;
+  border: 1px solid #333;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.cs-search-wrapper {
+  flex: 1;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  background: #1e1e1e;
+  border: 1px solid #444;
+  border-radius: 8px;
+  padding: 0 12px;
+  transition: border-color 0.2s;
+}
+
+.cs-search-wrapper:focus-within {
+  border-color: #0066cc;
+}
+
+.cs-search-input {
+  width: 100%;
+  padding: 10px 0;
+  background: transparent;
+  border: none;
+  color: #e0e0e0;
+  font-size: 0.95em;
+  outline: none;
+}
+
+.cs-btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #0066cc;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cs-btn-primary:hover {
+  background: #0052a3;
+}
+
+.cs-actions-main {
+  display: flex;
+  gap: 12px;
+}
+
+.cs-btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: #333;
+  color: #e0e0e0;
+  border: 1px solid #444;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cs-btn-secondary:hover {
+  background: #444;
+  border-color: #555;
+}
+
+.cs-btn-danger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(204, 51, 51, 0.2);
+  color: #ff6666;
+  border: 1px solid rgba(204, 51, 51, 0.4);
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cs-btn-danger:hover {
+  background: rgba(204, 51, 51, 0.3);
+  border-color: #ff6666;
+}
+
+/* ── Table Board ────────────────────────────────────────────────────── */
+.cs-table-container {
+  flex: 1;
+  overflow-y: auto;
+  background: #252525;
+  border: 1px solid #333;
+  border-radius: 12px;
+  position: relative;
+}
+
+.cs-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.cs-table th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #2a2a2a;
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 0.85em;
+  font-weight: 700;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #333;
+}
+
+.cs-table th:nth-child(2) {
+  width: 40%;
+}
+
+.cs-table th:nth-child(3) {
+  width: 45%;
+}
+
+.cs-table th:nth-child(4) {
+  width: 10%;
+  text-align: center;
+}
+
+.cs-table tr {
+  border-bottom: 1px solid #333;
+  transition: background 0.15s;
+}
+
+.cs-table tr:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.cs-table td {
+  padding: 12px 16px;
+  vertical-align: top;
+  color: #ccc;
+  font-size: 0.95em;
+  line-height: 1.5;
+}
+
+/* ── Cell Editing ── */
+.cs-cell-editable {
+  cursor: pointer;
+  min-height: 24px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.cs-cell-editable:hover {
+  background: rgba(0, 102, 204, 0.1);
+}
+
+.cs-command-cell {
+  font-family: "SF Mono", Monaco, Consolas, monospace;
+  color: #4ec9b0;
+  word-break: break-word;
+}
+
+.cs-description-cell {
+  color: #b0b0b0;
+}
+
+.cs-cell-input {
+  width: 100%;
+  background: #1e1e1e;
+  border: 1px solid #0066cc;
+  border-radius: 4px;
+  color: #e0e0e0;
+  padding: 8px;
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  resize: vertical;
+  min-height: 36px;
+}
+
+/* ── Actions ── */
+.cs-row-actions {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cs-action-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.1em;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.2s;
+  color: #666;
+}
+
+.cs-action-btn:hover {
+  background: #3a3a3a;
+  color: #e0e0e0;
+}
+
+.cs-action-btn.delete:hover {
+  color: #ff6666;
+  background: rgba(204, 51, 51, 0.2);
+}
+
+/* ── Empty State ── */
+.cs-empty-table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #555;
+  gap: 16px;
+}
+
+.cs-empty-icon {
+  font-size: 4em;
+  opacity: 0.2;
+}
+
+/* ── Responsive ────────────────────────────────────────────────────── */
+@media (max-width: 800px) {
+  .cs-table th:nth-child(1) {
+    width: 45%;
+  }
+  .cs-table th:nth-child(2) {
+    width: 45%;
+  }
+  .cs-table th:nth-child(3) {
+    width: 10%;
+  }
+}

@@ -84,4 +84,11 @@ export const allTools: Tool[] = [
     icon: "📦",
     feature: "repoToContext",
   },
+  {
+    id: "cheat-sheet",
+    path: "/cheat-sheet",
+    name: "Cheat Sheet",
+    icon: "📜",
+    feature: "cheatSheet",
+  },
 ];

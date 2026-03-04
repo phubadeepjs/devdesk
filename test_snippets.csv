@@ -1,0 +1,5 @@
+git status,Show the working tree status
+"git add .",Add all files to the staging area
+git commit -m "msg",Commit changes with a message
+"git push origin main",Push changes to remote main branch
+"ls -la",List all files in long format

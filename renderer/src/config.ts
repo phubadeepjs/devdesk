@@ -29,6 +29,7 @@ export const FEATURES = {
   base64Encoder: true,
   promptGenerator: true,
   jsonToTs: true,
+  cheatSheet: true,
 
   // Desktop-only features
   repoToContext: IS_ELECTRON,

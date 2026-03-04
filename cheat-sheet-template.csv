@@ -1,0 +1,8 @@
+Command/Snippet,Description
+git status,Show the working tree status
+"git add .",Add all files to the staging area
+"git commit -m ""message""",Commit changes with a message
+"npm run dev",Start the development server
+"docker-compose up -d",Start containers in the background
+"find . -name ""*.ts""",Find all TypeScript files
+"grep -r ""pattern"" .",Search for pattern in directory

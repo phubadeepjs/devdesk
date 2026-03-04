@@ -11,6 +11,7 @@ import TimestampConverter from "./components/tools/TimestampConverter";
 import EncoderDecoder from "./components/tools/EncoderDecoder";
 import PromptGenerator from "./components/tools/PromptGenerator";
 import JsonToTs from "./components/tools/JsonToTs";
+import CheatSheet from "./components/tools/CheatSheet";
 import Settings from "./components/Settings";
 import { SettingsProvider } from "./contexts/SettingsContext";
 import { FEATURES } from "./config";
@@ -84,6 +85,7 @@ const App: React.FC = () => {
             <Route path="base64-encoder" element={<EncoderDecoder />} />
             <Route path="prompt-generator" element={<PromptGenerator />} />
             <Route path="json-to-ts" element={<JsonToTs />} />
+            <Route path="cheat-sheet" element={<CheatSheet />} />
             <Route path="repo-to-context" element={<RepoToContextRoute />} />
             <Route path="settings" element={<Settings />} />
           </Route>
